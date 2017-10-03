@@ -109,12 +109,6 @@ void loop()
   green_val = digitalRead(GREEN_BUTTON);
   if (green_val == HIGH) {
     delay(500);
-    if (sms_begun == 0) {
-        Serial.println("new sms initialized");
-        sms.beginSMS(senderNumber);
-        sms_begun = 1;
-    }
-    Serial.println("proceeding to gps sending");
     sms.print(gps.location.lat(), 6); // append the lat to the sms
     sms.print(","); // append a comma
     sms.print(gps.location.lng(), 6); // append the lon to the sms
