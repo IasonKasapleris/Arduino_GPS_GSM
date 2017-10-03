@@ -29,7 +29,6 @@ const int YELLOW_BUTTON  = 7;
 int yellow_val  = 0;
 int green_val   = 0;
 String txtmsg = "";
-int sms_begun = 0; // variable to check if a new message will be created or not.
 
 void setup()
 {
@@ -125,16 +124,11 @@ void loop()
     txtmsg += String(gps.location.lng(), 6);
     txtmsg += "y\n";
     Serial.println(txtmsg);
-    int sms_chars = sms.available();
-    Serial.printiln(sms_chars);
-    Serial.println(txtmsg.length());
-    if (sms_chars > 120) {
-        Serial.println("ready to print");
+    if (txtmsg.length() > 120) {
+        sms.beginSMS(senderNumber);
         sms.print(txtmsg);
-        delay(100);
         sms.endSMS();
-        sms_begun = 0;
-        Serial.println("just printed");
+    }
     }
   }
     Serial.println("outside green val");
