@@ -126,6 +126,8 @@ void loop()
     txtmsg += "y\n";
     Serial.println(txtmsg);
     int sms_chars = sms.available();
+    Serial.printiln(sms_chars);
+    Serial.println(txtmsg.length());
     if (sms_chars > 120) {
         Serial.println("ready to print");
         sms.print(txtmsg);
