@@ -123,7 +123,6 @@ void loop()
         sms.print(txtmsg);
         sms.endSMS();
     }
-    }
   }
     Serial.println("outside green val");
 
