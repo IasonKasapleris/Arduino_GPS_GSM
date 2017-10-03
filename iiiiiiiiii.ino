@@ -116,7 +116,7 @@ void loop()
     txtmsg += String(gps.location.lat(), 6);
     txtmsg += ",";
     txtmsg += String(gps.location.lng(), 6);
-    txtmsg += "y\n";
+    txtmsg += "g\n";
     Serial.println(txtmsg);
     if (txtmsg.length() > 120) {
         sms.beginSMS(senderNumber);
@@ -129,6 +129,20 @@ void loop()
   yellow_val = digitalRead(YELLOW_BUTTON); // read input value and store it
   if (yellow_val == HIGH) {
     delay(500);
+    sms.print(gps.location.lat(), 6); // append the lat to the sms
+    sms.print(","); // append a comma
+    sms.print(gps.location.lng(), 6); // append the lon to the sms
+    sms.print("\n");
+    txtmsg += String(gps.location.lat(), 6);
+    txtmsg += ",";
+    txtmsg += String(gps.location.lng(), 6);
+    txtmsg += "y\n";
+    Serial.println(txtmsg);
+    if (txtmsg.length() > 120) {
+        sms.beginSMS(senderNumber);
+        sms.print(txtmsg);
+        sms.endSMS();
+        }
     //sms.beginSMS(senderNumber);
     //txtmsg += (gps.location.lat());
     //txtmsg += ",";
