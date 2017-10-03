@@ -120,9 +120,9 @@ void loop()
     sms.print(","); // append a comma
     sms.print(gps.location.lng(), 6); // append the lon to the sms
     sms.print("\n");
-    txtmsg += (gps.location.lat());
+    txtmsg += String(gps.location.lat(), 6);
     txtmsg += ",";
-    txtmsg += (gps.location.lng());
+    txtmsg += String(gps.location.lng(), 6);
     txtmsg += "y\n";
     Serial.println(txtmsg);
     int sms_chars = sms.available();
