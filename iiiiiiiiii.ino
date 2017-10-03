@@ -127,10 +127,15 @@ void loop()
     Serial.println(txtmsg);
     int sms_chars = sms.available();
     if (sms_chars > 120) {
+        Serial.println("ready to print");
+        sms.print(txtmsg);
+        delay(100);
         sms.endSMS();
         sms_begun = 0;
+        Serial.println("just printed");
     }
   }
+    Serial.println("outside green val");
 
   yellow_val = digitalRead(YELLOW_BUTTON); // read input value and store it
   if (yellow_val == HIGH) {
