@@ -29,6 +29,7 @@ const int YELLOW_BUTTON  = 7;
 int yellow_val  = 0;
 int green_val   = 0;
 String txtmsg = "";
+int sms_begun = 0; // variable to check if a new message will be created or not.
 
 void setup()
 {
@@ -106,10 +107,13 @@ void loop()
     }
   }
   
+  if (sms_begun == 0) {
+    sms.beginSMS(senderNumber);
+    sms_begun = 1;
+    }
   green_val = digitalRead(GREEN_BUTTON);
   if (green_val == HIGH) {
     delay(500);
-    sms.beginSMS(senderNumber);
     sms.print(gps.location.lat(), 6); // append the lat to the sms
     sms.print(","); // append a comma
     sms.print(gps.location.lng(), 6); // append the lon to the sms
@@ -122,6 +126,7 @@ void loop()
     int sms_chars = sms.available();
     if (sms_chars > 120) {
         sms.endSMS();
+        sms_begun = 0;
     }
   }
 
