@@ -122,6 +122,7 @@ void loop()
         sms.beginSMS(senderNumber);
         sms.print(txtmsg);
         sms.endSMS();
+        txtmsg = "";
     }
   }
     Serial.println("outside green val");
@@ -142,6 +143,7 @@ void loop()
         sms.beginSMS(senderNumber);
         sms.print(txtmsg);
         sms.endSMS();
+        txtmsg = "";
         }
     //sms.beginSMS(senderNumber);
     //txtmsg += (gps.location.lat());
