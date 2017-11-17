@@ -1,3 +1,7 @@
+// Kwdikas 3: To GPS lamvanei sima kathws o kwdikas trexei synexws kai mas stelnei ana synexws tin topothesia
+// Author: Iason-Stylianos Kasapleris
+// A.M.: 03112051 
+
 #include <AltSoftSerial.h> //Include all relevant libraries
 #include <TinyGPS++.h>
 #include <GSM.h>
@@ -19,16 +23,18 @@ GSM_SMS sms;
 
 char senderNumber[20]="00306947050972"; // Array to hold the number a SMS is retreived from
 // Array which holds the coordinates and the color of the button pressed.
-char coordinates[20][7];
 
 int led1 = 13;
 int led2 = 12;
+
 
 const int GREEN_BUTTON = 4;
 const int YELLOW_BUTTON  = 7; 
 int yellow_val  = 0;
 int green_val   = 0;
 String txtmsg = "";
+unsigned int x = 0;
+unsigned int t = 0;
 
 void setup()
 {
@@ -65,8 +71,8 @@ void loop()
 {
   while (ss.available() > 0) //while there is stuff in the buffer
     if (gps.encode(ss.read())) //if it can successfully decode it, do it. Else try again when more charachters are in the buffer
- 
-  if (sms.available()) // if a text has been recieved
+
+ if (sms.available()) // if a text has been recieved
   {
     Serial.println("Message received from:"); // print to the computer
 
@@ -105,41 +111,25 @@ void loop()
       digitalWrite(led2, HIGH);
     }
   }
-  
-  green_val = digitalRead(GREEN_BUTTON);
-  if (green_val == HIGH) {
-    delay(500);
-    sms.print(gps.location.lat(), 6); // append the lat to the sms
-    sms.print(","); // append a comma
-    sms.print(gps.location.lng(), 6); // append the lon to the sms
-    sms.print("\n");
+    t=millis();
+    if(t>=x+2000){
+    x = millis();
+    sms.beginSMS(senderNumber);
     txtmsg += String(gps.location.lat(), 6);
     txtmsg += ",";
     txtmsg += String(gps.location.lng(), 6);
-    txtmsg += "y\n";
+    txtmsg += " ";
+    txtmsg += x;
+    txtmsg += "\n";
     Serial.println(txtmsg);
-    if (txtmsg.length() > 120) {
-        sms.beginSMS(senderNumber);
-        sms.print(txtmsg);
-        sms.endSMS();
+    sms.print(gps.location.lat(), 6); // append the lat to the sms
+    sms.print(","); // append a comma
+    sms.print(gps.location.lng(), 6); // append the lon to the sms
+    sms.print(" ");
+    sms.print(x);
+    sms.print("\n");
+    sms.endSMS();
     }
-  }
-    Serial.println("outside green val");
-
-  yellow_val = digitalRead(YELLOW_BUTTON); // read input value and store it
-  if (yellow_val == HIGH) {
-    delay(500);
-    //sms.beginSMS(senderNumber);
-    //txtmsg += (gps.location.lat());
-    //txtmsg += ",";
-    //txtmsg += (gps.location.lng());
-    //txtmsg += "y\n";
-    //Serial.println(txtmsg);
-    //sms.print(txtmsg);
-    //sms.endSMS();  
-    //txtmsg = ""; 
-  }
-  
-  delay(1000); // delay
+  //delay(1000); // delay
+  Serial.println("after");
 }
-
